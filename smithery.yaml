@@ -1,0 +1,34 @@
+name: enhanced-mcp-server
+description: Advanced MCP server with AI tools for web search, content fetching, and more.
+author: Seu Nome
+tags: ["web", "search", "tools", "ai", "mcp"]
+repository: https://github.com/seu-usuario/enhanced-mcp-server
+
+startCommand:
+  type: http
+  configSchema:
+    type: object
+    properties:
+      jinaApiKey:
+        type: string
+        description: API key for Jina AI (for web search and fetch).
+      deeplApiKey:
+        type: string
+        description: API key for DeepL (for translation) (optional).
+    required:
+      - jinaApiKey
+  commandFunction:
+    |-
+    (config) => ({
+      command: 'python',
+      args: ['-m', 'smithery.server'], 
+      env: {
+        JINA_API_KEY: config.jinaApiKey,
+        DEEPL_API_KEY: config.deeplApiKey || '',
+        PORT: config.port.toString(), 
+        PYTHONUNBUFFERED: '1',
+        PYTHONIOENCODING: 'utf-8'
+      }
+    })
+testConfig:
+  jinaApiKey: "test_key_for_scanner"
